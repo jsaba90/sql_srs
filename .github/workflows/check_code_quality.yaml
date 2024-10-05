@@ -2,10 +2,10 @@ name: check_code_quality
 on: pull_request # Exécuter lors des pull requests
 jobs:
   black:
-    runs-on: ubuntu-20.4  # Utilise une machine virtuelle Ubuntu
+    runs-on: ubuntu-latest  # Utilise une machine virtuelle Ubuntu
     steps:
-      - uses: actions/checkout@v2  # Récupère le code du dépôt
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v4  # Récupère le code du dépôt
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.9  # Installe Python 3.9
       - run: |
