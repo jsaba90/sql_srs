@@ -50,10 +50,13 @@ sizes = pd.read_csv(io.StringIO(csv3))
 con.execute("CREATE TABLE IF NOT EXISTS sizes AS SELECT * FROM sizes")
 
 csv4 = """
-food_item,food_price
-cookie juice,2.5
-chocolatine,2
-muffin,3
+trademark
+Nike
+Asphalte
+Abercrombie
+Lewis
 """
 trademarks = pd.read_csv(io.StringIO(csv4))
 con.execute("CREATE TABLE IF NOT EXISTS trademarks AS SELECT * FROM trademarks")
+
+con.close()
