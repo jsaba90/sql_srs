@@ -1,9 +1,20 @@
 # pylint: disable=missing-module-docstring
-
+import logging
+import os
+import subprocess
+import logger
 import duckdb
 import streamlit as st
+import sys
 
-from streamlit import dataframe
+if "data" not in os.listdir():
+    logging.error(os.listdir())
+    logging.error("creating folder data")
+    os.mkdir("data")
+
+if "exercises_sql_tables.duckdb" not in os.listdir("data"):
+    # exec(open("init_db.py").read())
+    subprocess.run([sys.executable, "init_db.py"])
 
 con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=False)
 
