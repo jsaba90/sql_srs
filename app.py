@@ -2,7 +2,6 @@
 import logging
 import os
 import subprocess
-import logger
 import duckdb
 import streamlit as st
 import sys
