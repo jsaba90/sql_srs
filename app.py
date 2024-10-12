@@ -31,21 +31,23 @@ with st.sidebar:
         index=None,
         placeholder="Select a theme...",
     )
+    try:
+        st.write("You selected:", theme)
 
-    st.write("You selected:", theme)
+        exercise = (
+            con.execute(f"SELECT * FROM memory_state WHERE theme = '{theme}' ")
+            .df()
+            .sort_values("last_reviewed")
+        )
+        st.write(exercise)
 
-    exercise = (
-        con.execute(f"SELECT * FROM memory_state WHERE theme = '{theme}' ")
-        .df()
-        .sort_values("last_reviewed")
-    )
-    st.write(exercise)
+        exercise_name = exercise.iloc[0]["exercise_name"]
+        with open(f"answers/{exercise_name}.sql", "r") as f:
+            answer = f.read()
 
-    exercise_name = exercise.iloc[0]["exercise_name"]
-    with open(f"answers/{exercise_name}.sql", "r") as f:
-        answer = f.read()
-
-    solution_df = con.execute(answer).df()
+        solution_df = con.execute(answer).df()
+    except Exception as e:
+        st.write("")
 
 st.header("enter your code:")
 query = st.text_area(label="votre code SQL ici", key="user_input")
@@ -69,12 +71,20 @@ if query:
 tab2, tab3 = st.tabs(["Tables", "Solution"])
 
 with tab2:
-    # exercise_tables = ast.literal_eval(exercise.loc[0, "tables"])
-    exercise_tables = exercise.iloc[0]["tables"]
-    for table in exercise_tables:
-        st.write(f"table: {table}")
-        df_table = con.execute(f"SELECT * FROM '{table}'").df()
-        st.dataframe(df_table)
+    try:
+        # exercise_tables = ast.literal_eval(exercise.loc[0, "tables"])
+        exercise_tables = exercise.iloc[0]["tables"]
+        for table in exercise_tables:
+            st.write(f"table: {table}")
+            df_table = con.execute(f"SELECT * FROM '{table}'").df()
+            st.dataframe(df_table)
+
+    except Exception as e:
+        st.write("")
 
 with tab3:
-    st.text(answer)
+    try:
+        st.text(answer)
+
+    except Exception as e:
+        st.write("")
